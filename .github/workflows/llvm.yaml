@@ -23,7 +23,7 @@ jobs:
       - name: Clone LLVM
         run: git clone -b llvmorg-${{matrix.version}} --single-branch --recursive https://github.com/llvm/llvm-project
       - name: Patch LLVM8
-        if: startsWith(${{matrix.version}}, '8.0')
+        if: startsWith(matrix.version, '8.0')
         run: |
           cd llvm-project
           git fetch origin b288d90b39f4b905c02092a9bfcfd6d78f99b191

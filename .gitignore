@@ -93,3 +93,5 @@ package-lock.json
 
 snapshots
 !unittests/snapshots
+
+.build*

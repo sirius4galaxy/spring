@@ -4,6 +4,7 @@
 
 #include <eosio/chain/exceptions.hpp>
 #include <eosio/chain/finality/vote_message.hpp>
+#include <eosio/chain/application.hpp>
 
 #include <fc/log/logger.hpp>
 
@@ -37,6 +38,9 @@ boost::unit_test::test_suite* init_unit_test_suite(int argc, char* argv[]) {
          break;
       }
    }
+
+   appbase::compatible_chain_eos();
+
    setup_test_logging();
 
    // Register fc::exception translator

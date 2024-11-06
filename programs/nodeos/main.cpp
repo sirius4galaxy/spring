@@ -155,10 +155,10 @@ enum return_codes {
 int main(int argc, char** argv)
 {
 
-   ilog("nodeos started");
+   ilog("${name} started", ("name", nodeos::config::node_executable_name));
 
    try {
-      appbase::scoped_app app;
+      appbase::custom_scoped_app app;
       fc::scoped_exit<std::function<void()>> on_exit = [&]() {
          ilog("${name} version ${ver} ${fv}",
               ("name", nodeos::config::node_executable_name)("ver", app->version_string())
@@ -176,14 +176,24 @@ int main(int argc, char** argv)
       app->set_version_string(eosio::version::version_client());
       app->set_full_version_string(eosio::version::version_full());
 
-      auto root = fc::app_path();
-      app->set_default_data_dir(root / "eosio" / nodeos::config::node_executable_name / "data" );
-      app->set_default_config_dir(root / "eosio" / nodeos::config::node_executable_name / "config" );
-      http_plugin::set_defaults({
-         .default_unix_socket_path = "",
-         .default_http_port = 8888,
-         .server_header = nodeos::config::node_executable_name + "/" + app->version_string()
-      });
+      auto set_default_config = [&app]() {
+         auto root = fc::app_path();
+         app->set_default_data_dir(root / chain::config::system_account_name.to_string() / nodeos::config::node_executable_name / "data" );
+         app->set_default_config_dir(root / chain::config::system_account_name.to_string() / nodeos::config::node_executable_name / "config" );
+         http_plugin::set_defaults({
+            .default_unix_socket_path = "",
+            .default_http_port = 8888,
+            .server_header = nodeos::config::node_executable_name + "/" + app->version_string()
+         });
+      };
+      set_default_config();
+
+      app->compatible_chain_eos_handler = [&app, &set_default_config]() {
+         ilog("application compatible with eos chain");
+         appbase::compatible_chain_eos();
+         set_default_config();
+      };
+
       if(!app->initialize<chain_plugin, net_plugin, producer_plugin, resource_monitor_plugin>(argc, argv, initialize_logging)) {
          const auto& opts = app->get_options();
          if( opts.count("help") || opts.count("version") || opts.count("full-version") || opts.count("print-default-config") ) {

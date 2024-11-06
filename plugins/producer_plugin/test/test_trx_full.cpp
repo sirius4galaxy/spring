@@ -100,10 +100,10 @@ BOOST_AUTO_TEST_SUITE(ordered_trxs_full)
 // even when blocks are aborted and some transactions fail.
 BOOST_AUTO_TEST_CASE(producer) {
    fc::temp_directory temp;
-   appbase::scoped_app app;
-   
+   scoped_app_tester app;
+
    auto temp_dir_str = temp.path().string();
-   
+
    {
       std::promise<std::tuple<producer_plugin*, chain_plugin*>> plugin_promise;
       std::future<std::tuple<producer_plugin*, chain_plugin*>> plugin_fut = plugin_promise.get_future();
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(producer) {
 
       BOOST_REQUIRE( verify_equal(trxs, all_blocks ) );
 
-   } 
+   }
 }
 
 

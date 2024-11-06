@@ -45,9 +45,9 @@ BOOST_AUTO_TEST_SUITE(disallow_delayed_trx_test)
 BOOST_AUTO_TEST_CASE(delayed_trx) {
    using namespace std::chrono_literals;
    fc::temp_directory temp;
-   appbase::scoped_app app;
+   scoped_app_tester app;
    auto temp_dir_str = temp.path().string();
-   
+
    std::promise<std::tuple<producer_plugin*, chain_plugin*>> plugin_promise;
    std::future<std::tuple<producer_plugin*, chain_plugin*>> plugin_fut = plugin_promise.get_future();
    std::thread app_thread( [&]() {

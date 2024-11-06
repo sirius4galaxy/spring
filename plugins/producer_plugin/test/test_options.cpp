@@ -24,8 +24,8 @@ BOOST_AUTO_TEST_CASE(state_dir) {
 
    auto temp_dir_str = temp_dir.string();
    auto custom_state_dir_str = custom_state_dir.string();
-      
-   appbase::scoped_app app;
+
+   scoped_app_tester app;
 
    std::promise<std::tuple<producer_plugin*, chain_plugin*>> plugin_promise;
    std::future<std::tuple<producer_plugin*, chain_plugin*>> plugin_fut = plugin_promise.get_future();
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(state_dir) {
    // check that "--state-dir" option was taken into account
    BOOST_CHECK(  exists( custom_state_dir ));
    BOOST_CHECK( !exists( state_dir ));
-      
+
    app->quit();
    app_thread.join();
 }

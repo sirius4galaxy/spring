@@ -691,7 +691,7 @@ void chain_plugin_impl::plugin_initialize(const variables_map& options) {
                                                                  : std::filesystem::path("");
          if (retained_dir.is_relative())
             retained_dir = std::filesystem::path{blocks_dir}/retained_dir;
-            
+
          chain_config->blog = eosio::chain::partitioned_blocklog_config{
             .retained_dir = retained_dir,
             .archive_dir  = options.count("blocks-archive-dir") ? options.at("blocks-archive-dir").as<std::filesystem::path>()
@@ -714,18 +714,18 @@ void chain_plugin_impl::plugin_initialize(const variables_map& options) {
          }
       }
 
-      
+
 
       if( options.count( "extract-genesis-json" ) || options.at( "print-genesis-json" ).as<bool>()) {
          std::optional<genesis_state> gs;
-         
+
          gs = block_log::extract_genesis_state( blocks_dir, retained_dir );
          EOS_ASSERT( gs,
                      plugin_config_exception,
                      "Block log at '${path}' does not contain a genesis state, it only has the chain-id.",
                      ("path", (blocks_dir / "blocks.log").generic_string())
          );
-         
+
 
          if( options.at( "print-genesis-json" ).as<bool>()) {
             ilog( "Genesis JSON:\n${genesis}", ("genesis", json::to_pretty_string( *gs )));
@@ -813,7 +813,7 @@ void chain_plugin_impl::plugin_initialize(const variables_map& options) {
 
          auto chain_context = block_log::extract_chain_context( blocks_dir, retained_dir );
          std::optional<genesis_state> block_log_genesis;
-         std::optional<chain_id_type> block_log_chain_id;  
+         std::optional<chain_id_type> block_log_chain_id;
 
          if (chain_context) {
             std::visit(overloaded {
@@ -823,7 +823,7 @@ void chain_plugin_impl::plugin_initialize(const variables_map& options) {
                },
                [&](const chain_id_type& id) {
                   block_log_chain_id = id;
-               } 
+               }
             }, *chain_context);
 
             if( chain_id ) {
@@ -1075,7 +1075,7 @@ void chain_plugin_impl::plugin_initialize(const variables_map& options) {
 
          irreversible_block_channel.publish( priority::low, t );
       } );
-      
+
       applied_transaction_connection = chain->applied_transaction().connect(
             [this]( std::tuple<const transaction_trace_ptr&, const packed_transaction_ptr&> t ) {
                const auto& [ trace, ptrx ] = t;
@@ -2525,17 +2525,15 @@ read_only::get_account_return_t read_only::get_account( const get_account_params
    };
 
    http_params_t http_params;
-   
-   if( abi_def abi; abi_serializer::to_abi(code_account.abi, abi) ) {
 
-      const auto token_code = "eosio.token"_n;
+   if( abi_def abi; abi_serializer::to_abi(code_account.abi, abi) ) {
 
       auto core_symbol = extract_core_symbol();
 
       if (params.expected_core_symbol)
          core_symbol = *(params.expected_core_symbol);
 
-      const auto* t_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple( token_code, params.account_name, "accounts"_n ));
+      const auto* t_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple( config::token_account_name, params.account_name, "accounts"_n ));
       if( t_id != nullptr ) {
          const auto &idx = d.get_index<key_value_index, by_scope_primary>();
          auto it = idx.find(boost::make_tuple( t_id->id, core_symbol.to_symbol_code() ));
@@ -2563,18 +2561,18 @@ read_only::get_account_return_t read_only::get_account( const get_account_params
          }
          return {};
       };
-      
+
       http_params.total_resources          = lookup_object("userres"_n, params.account_name);
       http_params.self_delegated_bandwidth = lookup_object("delband"_n, params.account_name);
       http_params.refund_request           = lookup_object("refunds"_n, params.account_name);
       http_params.voter_info               = lookup_object("voters"_n, config::system_account_name);
       http_params.rex_info                 = lookup_object("rexbal"_n, config::system_account_name);
-      
+
       return [http_params = std::move(http_params), result = std::move(result), abi=std::move(abi), shorten_abi_errors=shorten_abi_errors,
               abi_serializer_max_time=abi_serializer_max_time]() mutable ->  chain::t_or_exception<read_only::get_account_results> {
          auto yield = [&]() { return abi_serializer::create_yield_function(abi_serializer_max_time); };
          abi_serializer abis(std::move(abi), yield());
-         
+
          if (http_params.total_resources)
             result.total_resources = abis.binary_to_variant("user_resources", *http_params.total_resources, yield(), shorten_abi_errors);
          if (http_params.self_delegated_bandwidth)
@@ -2665,7 +2663,7 @@ chain::symbol read_only::extract_core_symbol()const {
 
    // The following code makes assumptions about the contract deployed on eosio account (i.e. the system contract) and how it stores its data.
    const auto& d = db.db();
-   const auto* t_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple( "eosio"_n, "eosio"_n, "rammarket"_n ));
+   const auto* t_id = d.find<chain::table_id_object, chain::by_code_scope_table>(boost::make_tuple( config::system_account_name, config::system_account_name, "rammarket"_n ));
    if( t_id != nullptr ) {
       const auto &idx = d.get_index<key_value_index, by_scope_primary>();
       auto it = idx.find(boost::make_tuple( t_id->id, eosio::chain::string_to_symbol_c(4,"RAMCORE") ));

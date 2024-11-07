@@ -4,6 +4,10 @@
 
 namespace fc { namespace crypto {
 
+   namespace config {
+      std::string public_key_legacy_prefix = std::string(public_key_base_prefix) + "_" + public_key_prefix[0];
+   }
+
    struct recovery_visitor : fc::visitor<public_key::storage_type> {
       recovery_visitor(const sha256& digest, bool check_canonical)
       :_digest(digest)
@@ -30,7 +34,7 @@ namespace fc { namespace crypto {
 
    static public_key::storage_type parse_base58(const std::string& base58str)
    {
-      constexpr auto legacy_prefix = config::public_key_legacy_prefix;
+      constexpr auto legacy_prefix = config::public_key_eos_prefix;
       if(prefix_matches(legacy_prefix, base58str) && base58str.find('_') == std::string::npos ) {
          auto sub_str = base58str.substr(const_strlen(legacy_prefix));
          using default_type = typename std::variant_alternative_t<0, public_key::storage_type>; //public_key::storage_type::template type_at<0>;
@@ -78,7 +82,7 @@ namespace fc { namespace crypto {
 
       auto which = _storage.index();
       if (which == 0) {
-         return std::string(config::public_key_legacy_prefix) + data_str;
+         return config::public_key_legacy_prefix + data_str;
       } else {
          return std::string(config::public_key_base_prefix) + "_" + data_str;
       }

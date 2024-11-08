@@ -36,6 +36,8 @@ extern name eosio_any_name;       //{ "eosio.any"_n };
 extern name eosio_code_name;      //{ "eosio.code"_n };
 
 extern name token_account_name;
+extern name msig_account_name;
+extern name wrap_account_name;
 
 const static int      block_interval_ms = 500;
 const static int      block_interval_us = block_interval_ms*1000;

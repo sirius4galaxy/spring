@@ -16,6 +16,8 @@ namespace appbase {
       config::eosio_all_scope          = { "eosio.all"_n };
       config::eosio_any_name           = { "eosio.any"_n };
       config::eosio_code_name          = { "eosio.code"_n };
+      config::msig_account_name        = { "eosio.msig"_n };
+      config::wrap_account_name        = { "eosio.wrap"_n };
 
       fc::crypto::config::public_key_legacy_prefix = fc::crypto::config::public_key_eos_prefix;
    }

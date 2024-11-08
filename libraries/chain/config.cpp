@@ -10,5 +10,7 @@ namespace eosio::chain::config {
    name eosio_any_name           = { "eosio.any"_n };
    name eosio_code_name          = { "eosio.code"_n };
    name token_account_name       = { "eosio.token"_n };
+   name msig_account_name        = { "eosio.msig"_n };
+   name wrap_account_name        = { "eosio.wrap"_n };
 
 } /// namespace eosio::chain::config

@@ -8,6 +8,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 
 include( GNUInstallDirs )
 include( MASSigning )
+include( chain_config.cmake )
 
 set( CMAKE_CXX_STANDARD 20 )
 set( CMAKE_CXX_EXTENSIONS ON )
@@ -157,7 +158,7 @@ if ("${EOSIO_ROOT_KEY}" STREQUAL "")
    set(EOSIO_ROOT_KEY "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV")
 endif()
 
-message( STATUS "Using '${EOSIO_ROOT_KEY}' as public key for 'eosio' account" )
+message( STATUS "Using '${EOSIO_ROOT_KEY}' as public key for '${SYSTEM_ACCOUNT_NAME}' account" )
 
 option(ENABLE_TCMALLOC "use tcmalloc (requires gperftools)" OFF)
 if( ENABLE_TCMALLOC )

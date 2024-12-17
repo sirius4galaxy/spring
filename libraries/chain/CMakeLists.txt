@@ -1,3 +1,4 @@
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/config.cpp)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/eosio/chain/core_symbol.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/include/eosio/chain/core_symbol.hpp)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/genesis_state_root_key.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/genesis_state_root_key.cpp)
 
@@ -111,7 +112,7 @@ add_library( eosio_chain
              chain_config.cpp
              chain_id_type.cpp
              genesis_state.cpp
-             config.cpp
+             ${CMAKE_CURRENT_BINARY_DIR}/config.cpp
              ${CMAKE_CURRENT_BINARY_DIR}/genesis_state_root_key.cpp
 
               wast_to_wasm.cpp

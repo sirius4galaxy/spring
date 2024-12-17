@@ -1,3 +1,5 @@
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/crypto/config.cpp.in ${CMAKE_CURRENT_BINARY_DIR}/src/crypto/config.cpp)
+
 add_subdirectory( secp256k1 )
 add_subdirectory( libraries/bn256/src )
 add_subdirectory( libraries/bls12-381 )
@@ -63,6 +65,7 @@ set( fc_sources
      src/network/http/http_client.cpp
      src/compress/zlib.cpp
      src/log/gelf_appender.cpp
+     ${CMAKE_CURRENT_BINARY_DIR}/src/crypto/config.cpp
      )
 
 file( GLOB_RECURSE fc_headers ${CMAKE_CURRENT_SOURCE_DIR} *.hpp *.h )

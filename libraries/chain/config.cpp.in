@@ -1,0 +1,16 @@
+#include <${SYSTEM_ACCOUNT_NAME}/chain/config.hpp>
+
+namespace ${SYSTEM_ACCOUNT_NAME}::chain::config {
+
+   name system_account_name      = { "${SYSTEM_ACCOUNT_NAME}"_n };
+   name null_account_name        = { "${SYSTEM_ACCOUNT_NAME}.null"_n };
+   name producers_account_name   = { "${SYSTEM_ACCOUNT_NAME}.prods"_n };
+   name eosio_auth_scope         = { "${SYSTEM_ACCOUNT_NAME}.auth"_n };
+   name eosio_all_scope          = { "${SYSTEM_ACCOUNT_NAME}.all"_n };
+   name eosio_any_name           = { "${SYSTEM_ACCOUNT_NAME}.any"_n };
+   name eosio_code_name          = { "${SYSTEM_ACCOUNT_NAME}.code"_n };
+   name token_account_name       = { "${SYSTEM_ACCOUNT_NAME}.token"_n };
+   name msig_account_name        = { "${SYSTEM_ACCOUNT_NAME}.msig"_n };
+   name wrap_account_name        = { "${SYSTEM_ACCOUNT_NAME}.wrap"_n };
+
+} /// namespace ${SYSTEM_ACCOUNT_NAME}::chain::config

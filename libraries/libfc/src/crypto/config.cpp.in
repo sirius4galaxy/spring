@@ -1,0 +1,8 @@
+#include <fc/crypto/public_key.hpp>
+
+namespace fc { namespace crypto {
+
+   namespace config {
+      std::string public_key_legacy_prefix = "${PUBLIC_KEY_LEGACY_PREFIX}";
+   }
+}} // fc::crypto
